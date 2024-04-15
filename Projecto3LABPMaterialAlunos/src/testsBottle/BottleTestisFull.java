@@ -20,7 +20,8 @@ class BottleTestisFull {
 		boolean actual = bottleTest.isFull();
 		boolean expected = false;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 	
@@ -36,7 +37,8 @@ class BottleTestisFull {
 		boolean actual = bottleTest.isFull();
 		boolean expected = false;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 	
@@ -56,7 +58,8 @@ class BottleTestisFull {
 		boolean actual = bottleTest.isFull();
 		boolean expected = true;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 	
@@ -77,7 +80,8 @@ class BottleTestisFull {
 		boolean actual = bottleTest.isFull();
 		boolean expected = false;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 	
@@ -97,7 +101,8 @@ class BottleTestisFull {
 		boolean actual = bottleTest.isFull();
 		boolean expected = false;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 	}
 	
 	@Test
@@ -117,7 +122,8 @@ class BottleTestisFull {
 		boolean actual = bottleTest.isFull();
 		boolean expected = true;
 
-		assertEquals(actual,expected);
+		assertEquals(expected, actual);
+
 
 	}
 

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Table {
-    public static final String empty = "⬜";
+    public static final String EMPTY = "⬜";
     public static final String EOL = System.lineSeparator();
     public static final int DIFFICULTY = 3;     //grau de dificuldade
     public static final int DEFAULT_BOTTLE_CAPACITY = 5;    //tamanho por defeito das garrafas

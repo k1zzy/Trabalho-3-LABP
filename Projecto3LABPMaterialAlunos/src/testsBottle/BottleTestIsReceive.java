@@ -27,7 +27,7 @@ class BottleTestIsReceive {
 		boolean actual = bottleTest.receive(Filling.ANGEL);
 		boolean expected = true;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 
 	}
 
@@ -96,7 +96,7 @@ class BottleTestIsReceive {
 				+ empty + EOL
 				+ "😍" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 
 	}
 
@@ -127,7 +127,7 @@ class BottleTestIsReceive {
 				+ "😇"+ EOL
 				+ "😇" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 
 	}
 
@@ -158,7 +158,7 @@ class BottleTestIsReceive {
 				+ "😇"+ EOL
 				+ "😇" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 
 	}
 

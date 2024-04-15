@@ -19,8 +19,8 @@ public class Bottle implements Iterable<Filling>{
      * 
      */
     public Bottle() {
+    	contents = new Stack<>();
         this.size = DEFAULT_CAPACITY;
-        state = size;
     }
 
     /**
@@ -28,8 +28,8 @@ public class Bottle implements Iterable<Filling>{
      * @param capacity
      */
     public Bottle(int capacity) {
+    	contents = new Stack<>();
     	this.size = capacity;
-    	state = size;
     }
 
     /**
@@ -37,22 +37,15 @@ public class Bottle implements Iterable<Filling>{
      * @param content
      */
     public Bottle(Filling[] content) {
-    	this.size = content.length;
-    	this.contents = fillBottle(content);
-    	state = size;
+        this.size = content.length;
+        contents = new Stack<>();
+        for (int i = content.length-1; i >= 0; i--) { // loop de trás para frente
+            if (content[i] != null) { // se o content nao for null
+            	contents.push(content[i]); // adicionar o elemento a pilha
+                state++; // e aumentar o state atual da pilha
+            }
+        }
     }
-    
-    /**
-     * 
-     * @param content
-     */
-	private Stack<Filling> fillBottle(Filling[] content) {
-		Stack<Filling> bottle = new Stack<>();
-		for (Filling cont : content) {
-			bottle.push(cont);
-		}
-		return bottle;
-	}
 
     /**
      * 
@@ -67,7 +60,7 @@ public class Bottle implements Iterable<Filling>{
      * @return
      */
     public boolean isEmpty() {
-    	return contents.isEmpty();
+    	return state == 0;
     }
 
     /**
@@ -75,7 +68,7 @@ public class Bottle implements Iterable<Filling>{
      * @return
      */
     public Filling top() {
-    	if (!isEmpty()) {
+    	if (!isEmpty()) { // se nao estiver vazia
     	    return contents.peek();
     	} else {
     	    throw new EmptyStackException();
@@ -107,7 +100,9 @@ public class Bottle implements Iterable<Filling>{
      * @param s
      */
     public boolean receive(Filling s) {
-        if (state < size) { // se houver espaco no topo da bottle
+    	// so e valido caso reste espaco no topo, o filling nao for nulo e o filling for igual ao do topo
+    	// ou a garrafa estiver vazia
+        if (state < size && !(s.equals(null)) && (state == 0 || s.equals(top()))) {
         	contents.push(s); // coloca la o filling
         	state++;
         	return true; // e da operacao bem sucedida
@@ -151,15 +146,20 @@ public class Bottle implements Iterable<Filling>{
         return Arrays.copyOf(array, array.length);
     }
     
-    // TODO
     /**
      * 
      */
     public String toString() {
     	StringBuilder sb = new StringBuilder();
-    	
+    	Stack<Filling> copia = (Stack<Filling>) contents.clone();
         for (int i = 0; i < size; i++) {
-        	
+        	if (i < size - state) {
+        		sb.append(EMPTY);
+        		sb.append(EOL);
+        	} else {
+        		sb.append(copia.pop());
+        		sb.append(EOL);
+        	}
         }
         return sb.toString();
     }
