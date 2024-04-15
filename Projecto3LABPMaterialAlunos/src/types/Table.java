@@ -30,6 +30,8 @@ public class Table {
     	this.usedSymbols = chooseSymbols(symbols, nrSymbols, seed);
         this.seed = seed;
         bottleCapacity = capacity;
+        // numero de garrafas = ao numero de simbolos + a dificuldade
+        nrBottles = usedSymbols.length + DIFFICULTY; 
         bottles = new Bottle[nrBottles];
         
         // fill cada bottle da mesa
@@ -52,13 +54,13 @@ public class Table {
     }
     
     /**
-     * Enche as garrafas aleatoriamente dada uma seed com os simbolos escolhidos
+     * Enche as garrafas aleatoriamente com os simbolos escolhidos dada uma seed
      * 
      */
     private Bottle fillBottle(Filling[] symbols, int capacity, int seed) {
     	Filling[] chosen = new Filling[capacity];
     	Random rd = new Random(seed);
-    	for (int i = capacity; i > 0; i--) {
+    	for (int i = capacity-1; i >= 0; i--) {
     		chosen[i] = symbols[rd.nextInt(symbols.length-1)];
     	}
     	return new Bottle(chosen);
@@ -68,7 +70,9 @@ public class Table {
      * 
      */
     public void regenerateTable() {
-        
+    	for (int i = 0; i < nrBottles; i++) {
+        	bottles[i] = fillBottle(usedSymbols, bottleCapacity, seed);
+        }
     }
 
     /**
@@ -125,12 +129,14 @@ public class Table {
         	bottles[i].pourOut();
         }
     }
-
+    
+    // TODO
     /**
      * 
      * @param bottle
      */
     public void addBottle(Bottle bottle) {
+        nrBottles++;
         
     }
 
@@ -150,11 +156,27 @@ public class Table {
     public Filling top(int i) {
         return bottles[i].top();
     }
-
+    
+    
+    // TODO TA MAL MAS DEVE SER POR CAUSA DO RESTO
     /**
      * 
      */
     public String toString() {
-        return null;
-    } 
+    	StringBuilder sb = new StringBuilder();
+    	for (int i = 0; i < bottleCapacity; i++) {
+    		for(int j = 0; j < nrBottles; j++) {
+    			if (bottles[i].getFilling(j) != null) {
+    				sb.append(bottles[j].getFilling(i));
+    				sb.append("    ");
+    			}
+    			else {
+    				sb.append(EMPTY);
+    				sb.append("    ");
+    			}
+    		}
+    		sb.append(EOL);
+    	}
+    	return sb.toString();
+    }
 }

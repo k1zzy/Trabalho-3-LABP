@@ -12,6 +12,7 @@ public class Bottle implements Iterable<Filling>{
     public static final String EOL = System.lineSeparator();
 
     private Stack<Filling> contents;
+    private Filling[] contentsArray;
     private int size; // TODO ver se eh final
     private int state; // numero de contents atuais na bottle
 
@@ -21,6 +22,7 @@ public class Bottle implements Iterable<Filling>{
     public Bottle() {
     	contents = new Stack<>();
         this.size = DEFAULT_CAPACITY;
+        this.contentsArray = getContentArray();
     }
 
     /**
@@ -30,6 +32,7 @@ public class Bottle implements Iterable<Filling>{
     public Bottle(int capacity) {
     	contents = new Stack<>();
     	this.size = capacity;
+    	this.contentsArray = getContentArray();
     }
 
     /**
@@ -45,6 +48,7 @@ public class Bottle implements Iterable<Filling>{
                 state++; // e aumentar o state atual da pilha
             }
         }
+        this.contentsArray = getContentArray();
     }
 
     /**
@@ -89,10 +93,12 @@ public class Bottle implements Iterable<Filling>{
     public void pourOut() {
     	if (!isEmpty()) {
     		contents.pop();
+    		updateContentArray();
         	state--;
     	} else {
     		throw new IllegalArgumentException("A garrafa nao tem conteudo para verter");
     	}
+    	
     }
 
     /**
@@ -104,6 +110,7 @@ public class Bottle implements Iterable<Filling>{
     	// ou a garrafa estiver vazia
         if (state < size && !(s.equals(null)) && (state == 0 || s.equals(top()))) {
         	contents.push(s); // coloca la o filling
+        	updateContentArray(s);
         	state++;
         	return true; // e da operacao bem sucedida
         } else { // caso contrario
@@ -132,18 +139,42 @@ public class Bottle implements Iterable<Filling>{
     	return true;
     }
     
-    // TODO deve haver melhor maneira com o iterador
     /**
      * 
      * @return
      */
     public Filling[] getContent() {
-        Filling[] array = new Filling[size];
+        return Arrays.copyOf(contentsArray, contentsArray.length);
+    }
+    
+    /**
+     * Inicializa a array de contents
+     * 
+     */
+    private Filling[] getContentArray() {
+    	Filling[] array = new Filling[size];
         Stack<Filling> copia = (Stack<Filling>) contents.clone();
         for (int i = 0; i < state; i++) {
         	array[i] = copia.pop();
         }
+        this.contentsArray = Arrays.copyOf(array, array.length);
         return Arrays.copyOf(array, array.length);
+    }
+    
+    /**
+     * Atualiza a array de contents
+     * 
+     */
+    private void updateContentArray() {
+    	this.contentsArray[state--] = null;
+    }
+    
+    /**
+     * Atualiza a array de contents
+     * 
+     */
+    private void updateContentArray(Filling s) {
+    	this.contentsArray[state] = s;
     }
     
     /**
@@ -187,5 +218,12 @@ public class Bottle implements Iterable<Filling>{
             }
             return copia.pop();
         }
+    }
+    
+    /**
+     * Dado um index pega no filling nessa posicao na bottle
+     */
+    public String getFilling(int index) {
+    	return this.contentsArray[index].toString();
     }
 }
