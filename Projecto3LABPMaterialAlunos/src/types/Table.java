@@ -9,9 +9,9 @@ public class Table {
     public static final int DIFFICULTY = 3;     //grau de dificuldade
     public static final int DEFAULT_BOTTLE_CAPACITY = 5;    //tamanho por defeito das garrafas
     
-    private Filling[] usedSymbols;
     private int nrSymbols;
     private int seed;
+    private final Filling[] symbols;
     private int bottleCapacity;
     private Bottle[] bottles;
     private int nrBottles;
@@ -26,53 +26,49 @@ public class Table {
     public Table(Filling[] symbols, int numberOfUsedSymbols, int seed, int capacity) {
     	// o minimo entre o tamanho de simbolos possiveis e o numero de simbolos pretendidos
     	this.nrSymbols = Math.min(symbols.length, numberOfUsedSymbols);
-    	// escolher aleatoriamente os simbolos que vao ser usados
-    	this.usedSymbols = chooseSymbols(symbols, nrSymbols, seed);
-        this.seed = seed;
+    	this.symbols = Arrays.copyOf(symbols, nrSymbols);
+    	int[] contadorSimbolos = new int[nrSymbols];
+    	Random rd = new Random(seed); // criar o random com a seed
+    	
+    	this.seed = seed; //  definir a seed
         bottleCapacity = capacity;
+        
         // numero de garrafas = ao numero de simbolos + a dificuldade
-        nrBottles = usedSymbols.length + DIFFICULTY; 
+        nrBottles = nrSymbols + DIFFICULTY;
         bottles = new Bottle[nrBottles];
         
         // fill cada bottle da mesa
-        for (int i = 0; i < nrBottles; i++) {
-        	bottles[i] = fillBottle(usedSymbols, bottleCapacity, seed);
+        int i = 0;
+        for (; i < nrSymbols; i++) {
+        	bottles[i] = new Bottle(chooseSymbols(contadorSimbolos, rd));
+        }
+        for (; i < nrBottles; i++) {
+        	bottles[i] = new Bottle(capacity);
         }
     }
     
     /**
-     * Escolhe aleatoriamente os simbolos a usar nas garrafas dada uma seed e um vetor de simbolos a escolher
+     * Escolhe aleatoriamente os simbolos a usar nas garrafas
      * 
      */
-    private Filling[] chooseSymbols(Filling[] symbols, int nrSymbols, int seed) {
-    	Random rd = new Random(seed); // criar o random com a seed
-    	Filling[] choseSymbols = new Filling[nrSymbols];
-    	for (int i = 0; i < nrSymbols; i++) {
-    		choseSymbols[i] = symbols[rd.nextInt(symbols.length-1)]; // indice aleatorio entre [0, symbols length-1]
+    private Filling[] chooseSymbols(int[] contadorSimbolos, Random rd) {
+    	int rdSymbolIndex = 0;
+    	Filling[] chosenSymbols = new Filling[bottleCapacity];
+    	for (int i = 0; i < bottleCapacity; i++) {
+    		do {
+    			rdSymbolIndex = rd.nextInt(nrSymbols);
+    		} while(contadorSimbolos[rdSymbolIndex] == bottleCapacity);	
+    		contadorSimbolos[rdSymbolIndex]++;
+    		chosenSymbols[i] = symbols[rdSymbolIndex];
     	}
-		return Arrays.copyOf(choseSymbols, choseSymbols.length);
-    }
-    
-    /**
-     * Enche as garrafas aleatoriamente com os simbolos escolhidos dada uma seed
-     * 
-     */
-    private Bottle fillBottle(Filling[] symbols, int capacity, int seed) {
-    	Filling[] chosen = new Filling[capacity];
-    	Random rd = new Random(seed);
-    	for (int i = capacity-1; i >= 0; i--) {
-    		chosen[i] = symbols[rd.nextInt(symbols.length-1)];
-    	}
-    	return new Bottle(chosen);
+		return Arrays.copyOf(chosenSymbols, chosenSymbols.length);
     }
     
     /**
      * 
      */
     public void regenerateTable() {
-    	for (int i = 0; i < nrBottles; i++) {
-        	bottles[i] = fillBottle(usedSymbols, bottleCapacity, seed);
-        }
+    	
     }
 
     /**
@@ -137,7 +133,8 @@ public class Table {
      */
     public void addBottle(Bottle bottle) {
         nrBottles++;
-        
+        bottles = Arrays.copyOf(bottles, bottles.length+1);
+        bottles[bottles.length-1] = bottle;
     }
 
     /**
@@ -157,24 +154,16 @@ public class Table {
         return bottles[i].top();
     }
     
-    
-    // TODO TA MAL MAS DEVE SER POR CAUSA DO RESTO
     /**
      * 
      */
     public String toString() {
     	StringBuilder sb = new StringBuilder();
     	for (int i = 0; i < bottleCapacity; i++) {
-    		for(int j = 0; j < nrBottles; j++) {
-    			if (bottles[i].getFilling(j) != null) {
+    		for (int j = 0; j < nrBottles; j++) {
     				sb.append(bottles[j].getFilling(i));
     				sb.append("    ");
     			}
-    			else {
-    				sb.append(EMPTY);
-    				sb.append("    ");
-    			}
-    		}
     		sb.append(EOL);
     	}
     	return sb.toString();

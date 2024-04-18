@@ -81,8 +81,8 @@ class BottleTestTop {
 	void test5() {
 
 		Filling[] vec = new Filling[2];
-		vec[1] = Filling.LOVE;
 		vec[0] = Filling.ANGEL;
+		vec[1] = Filling.LOVE;
 
 		bottleTest = new Bottle(vec);
 

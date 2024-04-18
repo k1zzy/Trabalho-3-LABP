@@ -42,7 +42,7 @@ public class Bottle implements Iterable<Filling>{
     public Bottle(Filling[] content) {
         this.size = content.length;
         contents = new Stack<>();
-        for (int i = content.length-1; i >= 0; i--) { // loop de trás para frente
+        for (int i = 0; i < content.length; i++) { // loop de trás para frente
             if (content[i] != null) { // se o content nao for null
             	contents.push(content[i]); // adicionar o elemento a pilha
                 state++; // e aumentar o state atual da pilha
@@ -64,7 +64,7 @@ public class Bottle implements Iterable<Filling>{
      * @return
      */
     public boolean isEmpty() {
-    	return state == 0;
+    	return contents.isEmpty();
     }
 
     /**
@@ -72,11 +72,11 @@ public class Bottle implements Iterable<Filling>{
      * @return
      */
     public Filling top() {
-    	if (!isEmpty()) { // se nao estiver vazia
+//    	if (!isEmpty()) { // se nao estiver vazia
     	    return contents.peek();
-    	} else {
-    	    throw new EmptyStackException();
-    	}
+//    	} else {
+//    	    throw new EmptyStackException();
+//    	}
     }
 
     /**
@@ -86,7 +86,8 @@ public class Bottle implements Iterable<Filling>{
     public int spaceAvailable() {
         return size - state;
     }
-
+    
+    //  TODO meter no javadoc
     /**
      * 
      */
@@ -108,7 +109,7 @@ public class Bottle implements Iterable<Filling>{
     public boolean receive(Filling s) {
     	// so e valido caso reste espaco no topo, o filling nao for nulo e o filling for igual ao do topo
     	// ou a garrafa estiver vazia
-        if (state < size && !(s.equals(null)) && (state == 0 || s.equals(top()))) {
+        if (state < size && !(s.equals(null)) && (isEmpty() || s.equals(top()))) {
         	contents.push(s); // coloca la o filling
         	updateContentArray(s);
         	state++;
@@ -124,7 +125,7 @@ public class Bottle implements Iterable<Filling>{
      */
     public int capacity() {
         return size;
-    }	
+    }
 
     /**
      * 
@@ -166,7 +167,7 @@ public class Bottle implements Iterable<Filling>{
      * 
      */
     private void updateContentArray() {
-    	this.contentsArray[state--] = null;
+    	this.contentsArray[size - state] = null;
     }
     
     /**
@@ -174,7 +175,7 @@ public class Bottle implements Iterable<Filling>{
      * 
      */
     private void updateContentArray(Filling s) {
-    	this.contentsArray[state] = s;
+    	this.contentsArray[size - state - 1] = s;
     }
     
     /**
@@ -224,6 +225,6 @@ public class Bottle implements Iterable<Filling>{
      * Dado um index pega no filling nessa posicao na bottle
      */
     public String getFilling(int index) {
-    	return this.contentsArray[index].toString();
+    	return this.contentsArray[index] == null ? EMPTY : this.contentsArray[index].toString();
     }
 }
