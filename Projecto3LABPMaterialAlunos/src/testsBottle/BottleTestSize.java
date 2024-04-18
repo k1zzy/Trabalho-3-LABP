@@ -21,7 +21,7 @@ class BottleTestSize {
 		int actual = bottleTest.capacity();
 		int expected = 7;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 
 	}
 	
@@ -37,7 +37,7 @@ class BottleTestSize {
 		int actual = bottleTest.capacity();
 		int expected = 5;
 		
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 
 	}
 	
@@ -50,7 +50,7 @@ class BottleTestSize {
 		int actual = bottleTest.capacity();
 		int expected = 5;
 		
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 
 	}
 	

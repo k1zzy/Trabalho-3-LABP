@@ -17,7 +17,7 @@ public class BottleTestConstructors {
 		int actual = bottleTest.capacity();
 		int expected = Bottle.DEFAULT_CAPACITY;
 
-		assertEquals(actual,expected);
+		assertEquals(expected, actual);
 
 	}
 
@@ -29,7 +29,7 @@ public class BottleTestConstructors {
 		int actual = bottleTest.spaceAvailable();
 		int expected = 5;
 
-		assertEquals(actual,expected);
+		assertEquals(expected, actual);
 
 	}
 
@@ -43,7 +43,7 @@ public class BottleTestConstructors {
 		int actual = bottleTest.capacity();
 		int expected = 7;
 
-		assertEquals(actual,expected);
+		assertEquals(expected, actual);
 
 	}
 
@@ -57,7 +57,7 @@ public class BottleTestConstructors {
 		int actual = bottleTest.spaceAvailable();
 		int expected = 7;
 
-		assertEquals(actual,expected);
+		assertEquals(expected, actual);
 
 	}
 	
@@ -84,7 +84,7 @@ public class BottleTestConstructors {
 				+ "😇"+ Table.EOL
 				+ "😇"+ Table.EOL;
 
-		assertEquals(actual,expected);
+		assertEquals(expected, actual);
 	}
 	
 	@Test
@@ -106,7 +106,7 @@ public class BottleTestConstructors {
 				+ "😇"+ Table.EOL
 				+ "😍"+ Table.EOL;
 
-		assertEquals(actual,expected);
+		assertEquals(expected, actual);
 	}
 
 }

@@ -41,7 +41,8 @@ class BottleTestPourOut {
 				+ "😇"+ EOL
 				+ "😇" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 	}
 
 	@Test
@@ -72,7 +73,8 @@ class BottleTestPourOut {
                 + empty + EOL
 				+ empty + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 
@@ -102,7 +104,8 @@ class BottleTestPourOut {
 				+ "😇"+ EOL
 				+ "😇" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 
@@ -136,7 +139,8 @@ class BottleTestPourOut {
 				+ "😇" + EOL
 				+ "😇" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 	
@@ -170,7 +174,8 @@ class BottleTestPourOut {
 				+ "😇" + EOL
 				+ "😇" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 	
@@ -205,7 +210,8 @@ class BottleTestPourOut {
 				+ "😇" + EOL
 				+ "😇" + EOL;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
+
 
 	}
 }

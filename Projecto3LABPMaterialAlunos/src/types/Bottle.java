@@ -11,9 +11,9 @@ public class Bottle implements Iterable<Filling>{
     public static final String EMPTY = "⬜";
     public static final String EOL = System.lineSeparator();
 
-    private Stack<Filling> contents;
-    private Filling[] contentsArray;
-    private int size; // TODO ver se eh final
+    private Stack<Filling> contents; // pilha de contents
+    private Filling[] contentsArray; // array de contents
+    private final int size; // capacidade maxima da bottle
     private int state; // numero de contents atuais na bottle
 
     /**

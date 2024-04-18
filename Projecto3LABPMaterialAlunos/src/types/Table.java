@@ -9,12 +9,13 @@ public class Table {
     public static final int DIFFICULTY = 3;     //grau de dificuldade
     public static final int DEFAULT_BOTTLE_CAPACITY = 5;    //tamanho por defeito das garrafas
     
-    private int nrSymbols;
-    private int seed;
+    private final int nrSymbols;
     private final Filling[] symbols;
-    private int bottleCapacity;
+    private final int bottleCapacity;
     private Bottle[] bottles;
     private int nrBottles;
+    private final Random rd;
+    private final int nrBottlesInicial; // o numero de garrafas que existem quando a table eh criada
 
     /**
      * 
@@ -27,31 +28,22 @@ public class Table {
     	// o minimo entre o tamanho de simbolos possiveis e o numero de simbolos pretendidos
     	this.nrSymbols = Math.min(symbols.length, numberOfUsedSymbols);
     	this.symbols = Arrays.copyOf(symbols, nrSymbols);
-    	int[] contadorSimbolos = new int[nrSymbols];
-    	Random rd = new Random(seed); // criar o random com a seed
+    	this.rd = new Random(seed);
+    	this.bottleCapacity = capacity;
     	
-    	this.seed = seed; //  definir a seed
-        bottleCapacity = capacity;
-        
         // numero de garrafas = ao numero de simbolos + a dificuldade
         nrBottles = nrSymbols + DIFFICULTY;
-        bottles = new Bottle[nrBottles];
+        nrBottlesInicial = nrBottles;
         
         // fill cada bottle da mesa
-        int i = 0;
-        for (; i < nrSymbols; i++) {
-        	bottles[i] = new Bottle(chooseSymbols(contadorSimbolos, rd));
-        }
-        for (; i < nrBottles; i++) {
-        	bottles[i] = new Bottle(capacity);
-        }
+        bottles = fillBottles();
     }
     
     /**
      * Escolhe aleatoriamente os simbolos a usar nas garrafas
      * 
      */
-    private Filling[] chooseSymbols(int[] contadorSimbolos, Random rd) {
+    private Filling[] chooseSymbols(int[] contadorSimbolos) {
     	int rdSymbolIndex = 0;
     	Filling[] chosenSymbols = new Filling[bottleCapacity];
     	for (int i = 0; i < bottleCapacity; i++) {
@@ -64,11 +56,25 @@ public class Table {
 		return Arrays.copyOf(chosenSymbols, chosenSymbols.length);
     }
     
+    private Bottle[] fillBottles() {
+    	int[] contadorSimbolos = new int[nrSymbols];
+    	Bottle[] bottles = new Bottle[nrBottles];
+    	int i = 0;
+        for (; i < nrSymbols; i++) {
+        	bottles[i] = new Bottle(chooseSymbols(contadorSimbolos));
+        }
+        for (; i < nrBottles; i++) {
+        	bottles[i] = new Bottle(bottleCapacity);
+        }
+        return Arrays.copyOf(bottles, bottles.length);
+    }
+    
     /**
      * 
      */
     public void regenerateTable() {
-    	
+        nrBottles = nrBottlesInicial;
+        bottles = fillBottles();
     }
 
     /**
@@ -126,15 +132,14 @@ public class Table {
         }
     }
     
-    // TODO
     /**
      * 
      * @param bottle
      */
     public void addBottle(Bottle bottle) {
-        nrBottles++;
-        bottles = Arrays.copyOf(bottles, bottles.length+1);
-        bottles[bottles.length-1] = bottle;
+        nrBottles++; // incrementa o numero de garrafas
+        bottles = Arrays.copyOf(bottles, bottles.length+1); // aumenta o tamanho do array de garrafas
+        bottles[bottles.length-1] = bottle; // adiciona a garrafa
     }
 
     /**
