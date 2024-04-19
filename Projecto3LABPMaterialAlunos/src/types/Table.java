@@ -122,14 +122,14 @@ public class Table {
      * 
      * @param i
      * @param j
+     * @throws IllegalArgumentException
      */
     public void pourFromTo(int i, int j) {
-        if(bottles[i].isEmpty() || bottles[j].isFull()) {
-        	throw new IllegalArgumentException("Accao Invalida");
-        } else {
-        	bottles[j].receive(bottles[i].top());
-        	bottles[i].pourOut();
-        }
+		if (bottles[j].receive(bottles[i].top())) {
+			bottles[i].pourOut();
+		} else {
+			throw new IllegalArgumentException("The bottle " + j+1 + " cannot receive the filling from bottle " +i);
+		}
     }
     
     /**
@@ -153,6 +153,7 @@ public class Table {
     /**
      * 
      * @param i
+     * @throws EmptyStackException
      * @return
      */
     public Filling top(int i) {

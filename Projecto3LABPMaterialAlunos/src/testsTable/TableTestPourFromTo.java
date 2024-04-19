@@ -137,5 +137,28 @@ class TableTestPourFromTo {
 
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	void test6() {
+		
+		Filling[] symbols = Filling.values();
+		int numberOfUsedSymbols = 3;
+		int seed =1;
+		int bootleSize = 4;
+
+		tableTeste = new Table(symbols, numberOfUsedSymbols, seed, bootleSize);
+		
+		tableTeste.pourFromTo(0, 0);
+
+		String actual = tableTeste.toString();
+		
+		String expected = 
+				  "😃    😒    😡    ⬜    ⬜    ⬜    " + EOL
+				+ "😒    😡    😡    ⬜    ⬜    ⬜    " + EOL
+				+ "😒    😒    😃    ⬜    ⬜    ⬜    " + EOL
+				+ "😃    😡    😃    ⬜    ⬜    ⬜    " + EOL;
+
+		assertEquals(expected, actual);
+	}
 
 }

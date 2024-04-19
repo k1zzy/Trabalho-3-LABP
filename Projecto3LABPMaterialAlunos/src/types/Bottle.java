@@ -70,13 +70,10 @@ public class Bottle implements Iterable<Filling>{
     /**
      * 
      * @return
+     * @throws EmptyStackException caso a garrafa esteja vazia
      */
     public Filling top() {
-//    	if (!isEmpty()) { // se nao estiver vazia
     	    return contents.peek();
-//    	} else {
-//    	    throw new EmptyStackException();
-//    	}
     }
 
     /**
@@ -179,6 +176,13 @@ public class Bottle implements Iterable<Filling>{
     }
     
     /**
+     * Dado um index pega no filling nessa posicao na bottle
+     */
+    public String getFilling(int index) {
+    	return this.contentsArray[index] == null ? EMPTY : this.contentsArray[index].toString();
+    }
+    
+    /**
      * 
      */
     public String toString() {
@@ -219,12 +223,5 @@ public class Bottle implements Iterable<Filling>{
             }
             return copia.pop();
         }
-    }
-    
-    /**
-     * Dado um index pega no filling nessa posicao na bottle
-     */
-    public String getFilling(int index) {
-    	return this.contentsArray[index] == null ? EMPTY : this.contentsArray[index].toString();
     }
 }
