@@ -39,7 +39,7 @@ public class Game {
     		table.addBottle(getNewBottle());
     		score -= 100;
 		} else {
-			throw new IllegalStateException("You don't have enough points to use this feature.");
+			throw new IllegalStateException("You don't have enough points to add a new bottle.");
 		}
     }
 
@@ -119,18 +119,20 @@ public class Game {
      * 
      * @param i
      * @param j
-     * @throws EmptyStackException se a garrafa i estiver vazia
+     * @throws IllegalArgumentException
      */
     public void play(int i, int j) {
-    	jogadas++; // incrementa o numero de jogadas
     	try {
     		Filling filling = table.top(i); // guarda o conteudo do topo da garrafa i
     		while(table.top(i) == filling) { // enquanto o conteudo do topo da garrafa i for igual
         		table.pourFromTo(i, j); // verte o conteudo da garrafa i para a garrafa j
         	}
     	} catch (EmptyStackException e) { // caso a garrafa i esteja vazia
-    		// nada acontece
-    	}
+    	    // nao faz nada
+        } catch (IllegalArgumentException e) { // caso a jogada seja invalida
+            throw new IllegalArgumentException("Invalid move. Please choose a valid move." + Table.EOL);
+        }
+    	jogadas++; // incrementa o numero de jogadas
     	updateScore(); // atualiza a pontuacao
     }
 }

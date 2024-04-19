@@ -33,7 +33,7 @@ public class Table {
     	
         // numero de garrafas = ao numero de simbolos + a dificuldade
         nrBottles = nrSymbols + DIFFICULTY;
-        nrBottlesInicial = nrBottles;
+        nrBottlesInicial = nrBottles; // guarda o numero de garrafas inicial
         
         // fill cada bottle da mesa
         bottles = fillBottles();
@@ -46,7 +46,7 @@ public class Table {
     private Filling[] chooseSymbols(int[] contadorSimbolos) {
     	int rdSymbolIndex = 0;
     	Filling[] chosenSymbols = new Filling[bottleCapacity];
-    	for (int i = 0; i < bottleCapacity; i++) {
+    	for (int i = bottleCapacity-1; i >= 0; i--) {
     		do {
     			rdSymbolIndex = rd.nextInt(nrSymbols);
     		} while(contadorSimbolos[rdSymbolIndex] == bottleCapacity);	
@@ -127,8 +127,6 @@ public class Table {
     public void pourFromTo(int i, int j) {
 		if (bottles[j].receive(bottles[i].top())) {
 			bottles[i].pourOut();
-		} else {
-			throw new IllegalArgumentException("The bottle " + j+1 + " cannot receive the filling from bottle " +i);
 		}
     }
     

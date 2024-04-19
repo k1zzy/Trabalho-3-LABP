@@ -42,7 +42,7 @@ public class Bottle implements Iterable<Filling>{
     public Bottle(Filling[] content) {
         this.size = content.length;
         contents = new Stack<>();
-        for (int i = 0; i < content.length; i++) { // loop de trás para frente
+        for (int i = content.length-1; i >= 0; i--) { // loop de trás para frente
             if (content[i] != null) { // se o content nao for null
             	contents.push(content[i]); // adicionar o elemento a pilha
                 state++; // e aumentar o state atual da pilha
@@ -87,16 +87,14 @@ public class Bottle implements Iterable<Filling>{
     //  TODO meter no javadoc
     /**
      * 
+     * @throws  EmptyStackException caso a garrafa esteja vazia
      */
     public void pourOut() {
     	if (!isEmpty()) {
     		contents.pop();
     		updateContentArray();
         	state--;
-    	} else {
-    		throw new IllegalArgumentException("A garrafa nao tem conteudo para verter");
     	}
-    	
     }
 
     /**
