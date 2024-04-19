@@ -81,6 +81,12 @@ public class Main {
 		sc.close(); // fecha o scanner
 	}
 
+	/**
+     * Metodo para ler do utilizador a opcao 1 ou 2
+     * 
+	 * @param sc scanner para leitura de input
+     * @return 1 se o utilizador escolher 1, 2 se escolher 2
+     */
 	public static int oneOrTwo(Scanner sc) {
 		int option = 0;
 		while (true) { // ciclo para leitura da opcao
@@ -100,23 +106,32 @@ public class Main {
 		return option;
 	}
 	
+	/**
+     * Metodo para jogar uma ronda do jogo
+     * 
+	 * @param game jogo atual
+	 * @param nrBottles numero de garrafas
+	 * @param sc scanner para leitura de input
+     */
 	public static void playRound(Game game, int nrBottles, Scanner sc) {
 		int fromBottle = 0;
 		int toBottle = 0;
 		System.out.println(game.toString()); // mostra o estado atual do jogo
 			
-		System.out.println("Choose a bottle to pour from: " + Table.EOL);
 		while (true) {
 			try { // leitura da garrafa DE onde se vai verter
+			    System.out.println("Choose a bottle to pour from: " + Table.EOL);
 	            fromBottle = sc.nextInt() -1; // subtrai 1 para obter o indice correto
 	            if (fromBottle < 0 || fromBottle >= nrBottles + Table.DIFFICULTY ) {
 	                if (fromBottle == -1) { // se for -1 (se o utilizador enviar um 0)
                         try {
                             game.provideHelp(); // adiciona uma garrafa vazia
+                            System.out.println(game.toString()); // mostra o estado atual do jogo
+                            continue;
                         } catch (Exception e) {
                             System.out.println(e.getMessage() + Table.EOL); // mostra mensagem de erro se o score for < 100
                             sc.nextLine(); // limpar o buffer
-                        continue;
+                            continue;
                         }
                     } else {
                         System.out.println("Invalid input. Please choose a valid bottle to pour from." + Table.EOL);
@@ -154,7 +169,14 @@ public class Main {
             playRound(game, nrBottles, sc); // volta a pedir as garrafas
         }
 	}
-	
+
+	/**
+     * Metodo para jogar uma ronda do jogo
+     * 
+	 * @param game jogo atual
+	 * @param nrBottles numero de garrafas
+	 * @param sc scanner para leitura de input
+     */	
 	public static int chooseNrBottles(Scanner sc) {
 		int nrBottles = 0;
 		System.out.println("How many full bottles do you want to play with? Between 2 and 8:" + Table.EOL);
@@ -180,6 +202,12 @@ public class Main {
 		return nrBottles;
     }
 	
+	/**
+     * Metodo para o utilizador escolher a capacidade das garrafas
+	 * 
+	 * @param sc scanner para leitura de input
+	 * @return a capacidade das garrafas escolhida
+     */
 	public static int chooseCapacity(Scanner sc) {
 		int bottleCapacity = 0;
 		System.out.println("What capacity do you want the bottles to have? Between 3 and 8:" + Table.EOL);

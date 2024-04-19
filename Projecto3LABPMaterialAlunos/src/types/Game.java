@@ -1,5 +1,12 @@
 package types;
 
+/**
+ * Classe que representa um jogo de Water Puzzle Sort.
+ * 
+ * @author Rodrigo Afonso (61839)
+ * @version 1.0
+ */
+
 import java.util.EmptyStackException;
 
 public class Game {
@@ -8,23 +15,25 @@ public class Game {
 	private int jogadas;
 
     /**
+     * Contrutor de um jogo com um array de simbolos, um numero de simbolos usados, uma seed e uma capacidade
      * 
-     * @param symbols
-     * @param numberOfUsedSymbols
-     * @param seed
-     * @param capacity
+     * @param symbols array de simbolos possiveis
+     * @param numberOfUsedSymbols numero de simbolos usados
+     * @param seed seed para gerar numeros aleatorios
+     * @param capacity capacidade das garrafas
      */
     public Game(Filling[] symbols, int numberOfUsedSymbols, int seed, int capacity) {
     	this.table = new Table(symbols, numberOfUsedSymbols, seed, capacity);
     }
 
     /**
+     * Contrutor de um jogo com um array de simbolos, um numero de simbolos usados, uma seed, uma capacidade e um score
      * 
-     * @param symbols
-     * @param numberOfUsedSymbols
-     * @param seed
-     * @param capacity
-     * @param score
+     * @param symbols array de simbolos possiveis
+     * @param numberOfUsedSymbols numero de simbolos usados
+     * @param seed seed para gerar numeros aleatorios
+     * @param capacity capacidade das garrafas
+     * @param score pontuacao do jogo
      */
     public Game(Filling[] symbols, int numberOfUsedSymbols, int seed, int capacity, int score) {
     	this.table = new Table(symbols, numberOfUsedSymbols, seed, capacity);
@@ -32,7 +41,7 @@ public class Game {
     }
 
     /**
-     * 
+     * Em troca de 100 pontos, adiciona uma nova garrafa vazia à mesa
      */
     public void provideHelp() {
     	if(score >= 100) {
@@ -44,15 +53,19 @@ public class Game {
     }
 
     /**
+     * Metodo que obtem o numero de jogadas efetuadas na ronda
      * 
-     * @return
+     * @return numero de jogadas efetuadas na ronda
      */
     public int jogadas() {
         return jogadas;
     }
 
     /**
-     * 
+     * De acordo com o numero de jogadas, atualiza a pontuacao
+     *  1 < Jogadas <= 10: 1000 pontos
+     * 10 < Jogadas <= 15: 500 pontos
+     * 15 < Jogadas <= 25: 100 pontos
      */
     public void updateScore() {
     	if(isRoundFinished()) {
@@ -67,31 +80,36 @@ public class Game {
     }
 
     /**
+     * Metodo que verifica se a ronda esta terminada, ou seja, se todas as garrafas
+     * estao cheias e com o mesmo conteudo ou vazias
      * 
-     * @return
+     * @return true se a ronda estiver terminada, false caso contrario
      */
     public boolean isRoundFinished() {
         return table.areAllFilled();
     }
 
     /**
+     * Metodo que obtem a pontuacao do jogo
      * 
-     * @return
+     * @return pontuacao do jogo
      */
     public int score() {
         return score;
     }
 
     /**
-     * 
+     * Inicia uma nova ronda
      */
     public void startNewRound() {
+        jogadas = 0;
 		table.regenerateTable();
     }
 
     /**
+     * Metodo que obtem uma nova garrafa vazia
      * 
-     * @return
+     * @return uma nova garrafa vazia
      */
     public Bottle getNewBottle() {
         return new Bottle(table.getSizeBottles());
@@ -99,7 +117,9 @@ public class Game {
     }
 
     /**
+     * Metodo que obtem o estado da mesa
      * 
+     * @return uma string com a pontuacao, o estado da mesa e o estado da ronda
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -116,15 +136,18 @@ public class Game {
     }
     
     /**
+     * Metodo que executa uma jogada verificando sempre se e possivel verter o conteudo
      * 
-     * @param i
-     * @param j
-     * @throws IllegalArgumentException
+     * @param i garrafa de onde se vai verter
+     * @param j garrafa para onde se vai verter
+     * @throws IllegalArgumentException caso a jogada seja invalida
      */
     public void play(int i, int j) {
     	try {
     		Filling filling = table.top(i); // guarda o conteudo do topo da garrafa i
-    		while(table.top(i) == filling) { // enquanto o conteudo do topo da garrafa i for igual
+    		// enquanto o conteudo do topo da garrafa i for igual ao filling e a garrafa j nao estiver cheia
+    		// e o conteudo do topo da garrafa j for igual ao filling ou nulo
+    		while(table.top(i) == filling && !table.isFull(j) && (table.isEmpty(j) || table.top(j) == filling)) {
         		table.pourFromTo(i, j); // verte o conteudo da garrafa i para a garrafa j
         	}
     	} catch (EmptyStackException e) { // caso a garrafa i esteja vazia

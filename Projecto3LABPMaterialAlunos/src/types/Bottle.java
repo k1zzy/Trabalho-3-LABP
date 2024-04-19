@@ -1,5 +1,12 @@
 package types;
 
+/**
+ * Classe que representa uma garrafa com fillings. A garrafa tem uma capacidade maxima e um estado atual.
+ * 
+ * @author Rodrigo Afonso (61839)
+ * @version 1.0
+ */
+
 import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.Iterator;
@@ -17,7 +24,7 @@ public class Bottle implements Iterable<Filling>{
     private int state; // numero de contents atuais na bottle
 
     /**
-     * 
+     * Contrutor de uma bottle com as definições por defeito
      */
     public Bottle() {
     	contents = new Stack<>();
@@ -26,8 +33,9 @@ public class Bottle implements Iterable<Filling>{
     }
 
     /**
+     * Contrutor de uma bottle com uma capacidade definida
      * 
-     * @param capacity
+     * @param capacity capacidade da bottle
      */
     public Bottle(int capacity) {
     	contents = new Stack<>();
@@ -36,8 +44,9 @@ public class Bottle implements Iterable<Filling>{
     }
 
     /**
+     * Contrutor de uma bottle com um array de fillings
      * 
-     * @param content
+     * @param content array de fillings a adicionar a bottle
      */
     public Bottle(Filling[] content) {
         this.size = content.length;
@@ -52,24 +61,27 @@ public class Bottle implements Iterable<Filling>{
     }
 
     /**
+     * Metodo utilizado para verificar se a bottle esta cheia
      * 
-     * @return
+     * @return true se a bottle estiver cheia, false caso contrario
      */
     public boolean isFull() {
         return state == size;
     }
 
     /**
+     * Metodo utilizado para verificar se a bottle esta vazia
      * 
-     * @return
+     * @return true se a bottle estiver vazia, false caso contrario
      */
     public boolean isEmpty() {
     	return contents.isEmpty();
     }
 
     /**
+     * Metodo utilizado para verificar o filling no topo da bottle
      * 
-     * @return
+     * @return o filling no topo da bottle
      * @throws EmptyStackException caso a garrafa esteja vazia
      */
     public Filling top() {
@@ -77,15 +89,16 @@ public class Bottle implements Iterable<Filling>{
     }
 
     /**
+     * Metodo utilizado para obter o espaço disponivel na bottle
      * 
-     * @return
+     * @return o espaço disponivel na bottle
      */
     public int spaceAvailable() {
         return size - state;
     }
     
-    //  TODO meter no javadoc
     /**
+     * Metodo utilizado para retirar o conteudo no topo da bottle
      * 
      * @throws  EmptyStackException caso a garrafa esteja vazia
      */
@@ -98,8 +111,10 @@ public class Bottle implements Iterable<Filling>{
     }
 
     /**
+     * Recebe um filling e coloca-o no topo da bottle
      * 
-     * @param s
+     * @param s filling a ser colocado no topo da bottle
+     * @return true se a operação for bem sucedida, false caso contrario
      */
     public boolean receive(Filling s) {
     	// so e valido caso reste espaco no topo, o filling nao for nulo e o filling for igual ao do topo
@@ -115,16 +130,18 @@ public class Bottle implements Iterable<Filling>{
     }
 
     /**
+     * Metodo utilizado para obter a capacidade da bottle
      * 
-     * @return
+     * @return a capacidade da bottle
      */
     public int capacity() {
         return size;
     }
 
     /**
+     * Metodo utilizado para verificar se a bottle eh constituida por um unico filling
      * 
-     * @return
+     * @return true se a bottle for constituida por um unico filling, false caso contrario
      */
     public boolean isSingleFilling() {
     	for (Filling cont : contents) {
@@ -136,16 +153,18 @@ public class Bottle implements Iterable<Filling>{
     }
     
     /**
+     * Metodo utilizado para obter o conteudo da bottle representado em array
      * 
-     * @return
+     * @return o conteudo da bottle em array
      */
     public Filling[] getContent() {
         return Arrays.copyOf(contentsArray, contentsArray.length);
     }
     
     /**
-     * Inicializa a array de contents
+     * Inicializa a array de contents com os fillings da bottle
      * 
+     * @return a array de contents que representa o conteudo da bottle
      */
     private Filling[] getContentArray() {
     	Filling[] array = new Filling[size];
@@ -158,16 +177,16 @@ public class Bottle implements Iterable<Filling>{
     }
     
     /**
-     * Atualiza a array de contents
-     * 
+     * Atualiza a array de contents, eh chamada apos cada operacao de pourOut
      */
     private void updateContentArray() {
     	this.contentsArray[size - state] = null;
     }
     
     /**
-     * Atualiza a array de contents
+     * Atualiza a array de contents, eh chamada apos cada operacao de receive
      * 
+     * @param s filling a ser colocado na array de contents
      */
     private void updateContentArray(Filling s) {
     	this.contentsArray[size - state - 1] = s;
@@ -175,13 +194,15 @@ public class Bottle implements Iterable<Filling>{
     
     /**
      * Dado um index pega no filling nessa posicao na bottle
+     * 
+     * @param index posicao do filling na bottle
      */
     public String getFilling(int index) {
     	return this.contentsArray[index] == null ? EMPTY : this.contentsArray[index].toString();
     }
     
     /**
-     * 
+     *  Metodo utilizado para obter o estado atual da bottle em string
      */
     public String toString() {
     	StringBuilder sb = new StringBuilder();
@@ -199,14 +220,16 @@ public class Bottle implements Iterable<Filling>{
     }
 
     /**
+     * Metodo utilizado para obter o iterador da bottle
      * 
+     * @return o iterador da bottle
      */
     public Iterator<Filling> iterator() {
         return new BottleIterator();
     }
     
     /**
-     * 
+     * Classe interna que implementa o iterador da bottle
      */
     private class BottleIterator implements Iterator<Filling> {
     	Stack<Filling> copia = (Stack<Filling>) contents.clone();
