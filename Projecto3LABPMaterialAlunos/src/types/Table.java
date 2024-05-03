@@ -1,5 +1,12 @@
 package types;
 
+/**
+ * Classe que representa uma table de garrafas.
+ * 
+ * @author Rodrigo Afonso (61839)
+ * @version 1.0
+ */
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -18,11 +25,12 @@ public class Table {
     private final int nrBottlesInicial; // o numero de garrafas que existem quando a table eh criada
 
     /**
+     * Contrutor de uma table comm um certo numero de simbolos, um numero de simbolos usados, uma seed e uma capacidade
      * 
-     * @param symbols
-     * @param numberOfUsedSymbols
-     * @param seed
-     * @param capacity
+     * @param symbols array de simbolos possiveis
+     * @param numberOfUsedSymbols numero de simbolos usados
+     * @param seed seed para gerar numeros aleatorios
+     * @param capacity capacidade das garrafas
      */
     public Table(Filling[] symbols, int numberOfUsedSymbols, int seed, int capacity) {
     	// o minimo entre o tamanho de simbolos possiveis e o numero de simbolos pretendidos
@@ -38,24 +46,12 @@ public class Table {
         // fill cada bottle da mesa
         bottles = fillBottles();
     }
-    
+
     /**
-     * Escolhe aleatoriamente os simbolos a usar nas garrafas
+     * Enche as garrafas da mesa com fillings aleatorios
      * 
+     * @return array de garrafas
      */
-    private Filling[] chooseSymbols(int[] contadorSimbolos) {
-    	int rdSymbolIndex = 0;
-    	Filling[] chosenSymbols = new Filling[bottleCapacity];
-    	for (int i = bottleCapacity-1; i >= 0; i--) {
-    		do {
-    			rdSymbolIndex = rd.nextInt(nrSymbols);
-    		} while(contadorSimbolos[rdSymbolIndex] == bottleCapacity);	
-    		contadorSimbolos[rdSymbolIndex]++;
-    		chosenSymbols[i] = symbols[rdSymbolIndex];
-    	}
-		return Arrays.copyOf(chosenSymbols, chosenSymbols.length);
-    }
-    
     private Bottle[] fillBottles() {
     	int[] contadorSimbolos = new int[nrSymbols];
     	Bottle[] bottles = new Bottle[nrBottles];
@@ -70,7 +66,26 @@ public class Table {
     }
     
     /**
+     * Escolhe aleatoriamente os simbolos a usar nas garrafas
      * 
+     * @param contadorSimbolos array com o numero de vezes que cada simbolo foi escolhido
+     * @return array com os simbolos escolhidos
+     */
+    private Filling[] chooseSymbols(int[] contadorSimbolos) {
+    	int rdSymbolIndex = 0;
+    	Filling[] chosenSymbols = new Filling[bottleCapacity];
+    	for (int i = bottleCapacity-1; i >= 0; i--) {
+    		do {
+    			rdSymbolIndex = rd.nextInt(nrSymbols);
+    		} while(contadorSimbolos[rdSymbolIndex] == bottleCapacity);	
+    		contadorSimbolos[rdSymbolIndex]++;
+    		chosenSymbols[i] = symbols[rdSymbolIndex];
+    	}
+		return Arrays.copyOf(chosenSymbols, chosenSymbols.length);
+    }
+    
+    /**
+     * Re-enche a mesa com as definiçoes iniciais mas com conteudos diferentes
      */
     public void regenerateTable() {
         nrBottles = nrBottlesInicial;
@@ -78,35 +93,39 @@ public class Table {
     }
 
     /**
+     * Veririca se uma certa garrafa da mesa eh considerada como uma garrafa de um so conteudo
      * 
-     * @param i
-     * @return
+     * @param i indice da garrafa a verificar
+     * @return true se a garrafa eh de um so conteudo, false caso contrario
      */
     public boolean singleFilling(int i) {
         return bottles[i].isSingleFilling() ? true : false;
     }
 
     /**
+     * Verifica se uma certa garrafa da mesa esta vazia
      * 
-     * @param i
-     * @return
+     * @param i indice da garrafa a verificar
+     * @return true se a garrafa esta vazia, false caso contrario
      */
     public boolean isEmpty(int i) {
         return bottles[i].isEmpty() ? true : false;
     }
 
     /**
+     * Verifica se uma certa garrafa da mesa esta cheia
      * 
-     * @param i
-     * @return
+     * @param i indice da garrafa a verificar
+     * @return true se a garrafa esta cheia, false caso contrario
      */
     public boolean isFull(int i) {
         return bottles[i].isFull() ? true : false;
     }
 
     /**
+     * Verifica se todas as garrafas da mesa estao cheias
      * 
-     * @return
+     * @return true se todas as garrafas estao cheias, false caso contrario
      */
     public boolean areAllFilled() {
         for (Bottle bottle : bottles) {
@@ -119,20 +138,22 @@ public class Table {
     }
 
     /**
+     * Verte o conteudo de uma garrafa para outra
      * 
-     * @param i
-     * @param j
-     * @throws IllegalArgumentException
+     * @param i garrafa de onde se vai verter
+     * @param j garrafa para onde se vai verter
+     * @throws IllegalArgumentException caso a garrafa i esteja vazia
      */
     public void pourFromTo(int i, int j) {
-		if (bottles[j].receive(bottles[i].top())) {
+		if (bottles[j].receive(top(i))) {
 			bottles[i].pourOut();
 		}
     }
     
     /**
+     * Adiciona uma certa garrafa a mesa
      * 
-     * @param bottle
+     * @param bottle garrafa a adicionar
      */
     public void addBottle(Bottle bottle) {
         nrBottles++; // incrementa o numero de garrafas
@@ -141,25 +162,29 @@ public class Table {
     }
 
     /**
+     * Metodo que obtem a capacidade das garrafas na table
      * 
-     * @return
+     * @return a capacidade das garrafas
      */
     public int getSizeBottles() {
         return bottleCapacity;
     }
 
     /**
+     * Metodo que obtem o filling no topo de uma garrafa
      * 
-     * @param i
-     * @throws EmptyStackException
-     * @return
+     * @param i indice da garrafa
+     * @throws EmptyStackException caso a garrafa esteja vazia
+     * @return o filling no topo da garrafa
      */
     public Filling top(int i) {
         return bottles[i].top();
     }
     
     /**
+     * Metodo que representa a mesa em forma de string
      * 
+     * @return uma representaçao textual da mesa
      */
     public String toString() {
     	StringBuilder sb = new StringBuilder();
